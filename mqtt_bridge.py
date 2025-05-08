@@ -2,8 +2,8 @@ import json
 import paho.mqtt.client as mqtt
 
 # Configuración del broker Mosquitto (al que se conecta este script)
-MQTT_BROKER = 'localhost'
-MQTT_PORT = 1883
+MQTT_BROKER = '10.100.0.102'
+MQTT_PORT = 3004
 
 # Topics de entrada desde los dos servidores
 TOPICS_ENTRADA = ['servidor1/data', 'servidor2/data']
