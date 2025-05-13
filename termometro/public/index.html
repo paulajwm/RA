@@ -1,18 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Temperatura - Nodo1</title>
+  <meta charset="UTF-8">
+  <title>Monitor nodo1</title>
   <style>
-    table, th, td {
-      border: 1px solid black;
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f1f1f1;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .contenedor {
+      display: flex;
+      gap: 50px;
+    }
+
+    .indicador {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .barra {
+      width: 60px;
+      height: 250px;
+      background: linear-gradient(to top, red, orange, yellow, lightblue);
+      border: 2px solid #333;
+      position: relative;
+      margin-top: 10px;
+    }
+
+    .nivel {
+      background-color: rgba(0, 0, 0, 0.6);
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+
+    table {
       border-collapse: collapse;
-      padding: 8px;
+      width: 400px;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+
+    thead {
+      background-color: #3f51b5;
+      color: white;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #e3f2fd;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: #fff;
+    }
+
+    .humedad-texto {
+      margin-top: 5px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1>Temperatura nodo1</h1>
-  <h2 id="media"></h2>
+  <h1>Temperatura y humedad - Nodo1</h1>
+  <h2 id="media">Cargando datos...</h2>
+
+  <div class="contenedor">
+    <div class="indicador">
+      <strong>Temperatura</strong>
+      <div class="barra">
+        <div class="nivel" id="barra-temperatura" style="height:0%"></div>
+      </div>
+    </div>
+
+    <div class="indicador">
+      <strong>Humedad</strong>
+      <div class="barra" style="background: linear-gradient(to top, navy, cyan);">
+        <div class="nivel" id="barra-humedad" style="height:0%"></div>
+      </div>
+      <div class="humedad-texto" id="humedad-texto"></div>
+    </div>
+  </div>
+
+  <br><br>
 
   <table>
     <thead>
@@ -21,8 +102,7 @@
         <th>Fecha</th>
       </tr>
     </thead>
-    <tbody id="tabla">
-    </tbody>
+    <tbody id="tabla"></tbody>
   </table>
 
   <script>
@@ -30,23 +110,42 @@
       fetch("/temperatura/nodo1")
         .then(r => r.json())
         .then(data => {
-          document.getElementById("media").innerText = `Media de últimas 5: ${data.media} °C`;
+          document.getElementById("media").innerText = `Media de temperatura: ${data.media} °C`;
 
-          let tabla = document.getElementById("tabla");
+          // Tabla
+          const tabla = document.getElementById("tabla");
           tabla.innerHTML = "";
+          let humedad_total = 0;
+
           data.ultimas.forEach(row => {
             const tr = document.createElement("tr");
-            const celdaTemp = `<td>${row.temperatura}</td>`;
-            const fecha = new Date(row.timestamp).toLocaleString();
-            const celdaFecha = `<td>${fecha}</td>`;
-            tr.innerHTML = celdaTemp + celdaFecha;
+            const temp = document.createElement("td");
+            const fecha = document.createElement("td");
+
+            temp.textContent = row.temperatura + " °C";
+            fecha.textContent = new Date(row.timestamp).toLocaleString();
+
+            tr.appendChild(temp);
+            tr.appendChild(fecha);
             tabla.appendChild(tr);
+
+            humedad_total += parseFloat(row.humedad || 0);
           });
+
+          // Barra de temperatura
+          let alturaTemp = Math.min((data.media / 45) * 100, 100);
+          document.getElementById("barra-temperatura").style.height = alturaTemp + "%";
+
+          // Humedad media
+          let mediaHumedad = parseFloat((humedad_total / data.ultimas.length).toFixed(2));
+          let alturaHum = Math.min((mediaHumedad / 100) * 100, 100);
+          document.getElementById("barra-humedad").style.height = alturaHum + "%";
+          document.getElementById("humedad-texto").innerText = `${mediaHumedad}% de humedad`;
         });
     }
 
-    setInterval(actualizar, 60000); // 60s
     actualizar();
+    setInterval(actualizar, 60000); // Cada minuto
   </script>
 </body>
 </html>
