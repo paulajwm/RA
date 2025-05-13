@@ -19,7 +19,7 @@ app.get('/temperatura/:nodo', (req, res) => {
   const nodo = req.params.nodo;
 
   const query = `
-    SELECT temperatura, timestamp
+    SELECT temperatura, humedad, timestamp
     FROM lecturas
     WHERE id_nodo = ?
     ORDER BY timestamp DESC
