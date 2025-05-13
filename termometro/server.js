@@ -23,14 +23,20 @@ app.get('/temperatura/:nodo', (req, res) => {
     FROM lecturas
     WHERE id_nodo = ?
     ORDER BY timestamp DESC
-    LIMIT 1
+    LIMIT 5
   `;
 
   db.query(query, [nodo], (err, results) => {
     if (err) return res.status(500).send('Error en la BD');
     if (results.length === 0) return res.status(404).send('Nodo no encontrado');
 
-    res.json(results[0]);
+    const sum = results.reduce((acc, row) => acc + parseFloat(row.temperatura), 0);
+    const media = parseFloat((sum / results.length).toFixed(2));
+
+    res.json({
+      media,
+      ultimas: results
+    });
   });
 });
 
