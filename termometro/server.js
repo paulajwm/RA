@@ -6,8 +6,8 @@ const PORT = 4000;
 // Base de datos
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'root',
-  password: '', // pon la tuya si tienes
+  user: 'termometro',
+  password: 'alumno', // pon la tuya si tienes
   database: 'sensores'
 });
 
