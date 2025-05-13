@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Termómetro nodo1</title>
+  <style>
+    .barra {
+      width: 50px;
+      height: 200px;
+      border: 2px solid black;
+      background-color: lightgray;
+      position: relative;
+      margin-top: 20px;
+    }
+    .nivel {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Temperatura nodo1</h1>
+  <div class="barra">
+    <div class="nivel" id="nivel" style="height:0%"></div>
+  </div>
+  <p id="valor"></p>
+
+  <script>
+    function actualizar() {
+      fetch("/temperatura/nodo1")
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById("valor").innerText = `Temperatura: ${data.temperatura} °C`;
+          let altura = Math.min(data.temperatura * 4, 100); // Escalado simple
+          document.getElementById("nivel").style.height = altura + "%";
+        }).catch(() => {
+          document.getElementById("valor").innerText = "Error al obtener temperatura";
+        });
+    }
+
+    setInterval(actualizar, 5000);
+    actualizar();
+  </script>
+</body>
+</html>
