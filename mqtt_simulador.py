@@ -3,12 +3,12 @@ import random
 import json
 import paho.mqtt.publish as publish
 
-# Datos base
-topic = "datos/recibidos"
-broker = "localhost"
+# Configuración
+TOPIC = "datos/recibidos"
+BROKER = "localhost"  # Cambia si usas IP diferente
 
-while True:
-    payload = {
+def generar_datos():
+    return {
         "id_nodo": "nodo1",
         "temperatura": round(random.uniform(20.0, 30.0), 2),
         "humedad": round(random.uniform(40.0, 60.0), 2),
@@ -17,7 +17,11 @@ while True:
         "timestamp": int(time.time() * 1000)
     }
 
-    print("Publicando:", payload)
+print("Simulador activo: publicando datos cada 60 segundos...")
 
-    publish.single(topic, json.dumps(payload), hostname=broker)
-    time.sleep(5)  # Espera 5 segundos antes del siguiente envío
+while True:
+    payload = generar_datos()
+    print("Enviando:", payload)
+    
+    publish.single(TOPIC, json.dumps(payload), hostname=BROKER)
+    time.sleep(60)  # Espera 60 segundos antes del siguiente envío
