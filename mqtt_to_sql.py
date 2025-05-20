@@ -6,7 +6,7 @@ import paho.mqtt.client as mqtt
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="",  # añade tu contraseña si tienes
+    password="alumno",  # añade tu contraseña si tienes
     database="sensores"
 )
 cursor = db.cursor()
