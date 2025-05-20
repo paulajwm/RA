@@ -3,7 +3,7 @@ import time
 import random
 
 # Configuración
-URL = 'http://10.100.0.102:3004/record'  # Cambiá localhost si es remoto
+URL = 'http://10.100.0.102:3003/record'  # Cambiá localhost si es remoto
 ID_NODO = 'nodo1'
 
 def generar_dato():
