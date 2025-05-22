@@ -24,7 +24,15 @@ app1.use(cookieParser());
 app1.use(express.static(path.join(__dirname, 'public')));
 
 app1.set('trust proxy', true); // ← necesario si hay un proxy como HAProxy
-app1.use(IpFilter(blacklist, { mode: 'deny' })); // ← activa el filtro
+app1.use(IpFilter(blacklist, { mode: 'deny',
+  detectIp: (req) => {
+    const ip = req.ip;
+    if (ip.includes('::ffff:')) {
+      return ip.split('::ffff:')[1];
+    }
+    return ip;
+  }
+})); // ← activa el filtro
 
 app1.use('/', indexRouter);
 app1.use('/users', usersRouter);
@@ -55,7 +63,15 @@ app2.use(cookieParser());
 app2.use(express.static(path.join(__dirname, 'public')));
 
 app2.set('trust proxy', true);
-app2.use(IpFilter(blacklist, { mode: 'deny' }));
+app2.use(IpFilter(blacklist, { mode: 'deny',
+  detectIp: (req) => {
+    const ip = req.ip;
+    if (ip.includes('::ffff:')) {
+      return ip.split('::ffff:')[1];
+    }
+    return ip;
+  } 
+}));
 
 app2.use('/', indexRouter);
 app2.use('/users', usersRouter);
