@@ -9,7 +9,7 @@ const BACKEND = process.env.BACKEND || 'http://10.100.0.102:3001/record'; // Cam
 app.use(express.json());
 
 const buckets = {};
-const capacity = 50;
+const capacity = 5;
 const leakRate = 1;
 const interval = 1000;
 
