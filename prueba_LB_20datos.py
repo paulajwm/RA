@@ -1,25 +1,26 @@
 import requests
 import time
+import random
 
-# Dirección del HAProxy o balanceador con el Leaky Bucket
-URL = "http://10.100.0.102:5000/record"  # Cambia IP y puerto si es necesario
+URL = "http://localhost:3003/record"
 
-# Datos que se enviarán en el cuerpo del POST
-datos = {
-    "mensaje": "Prueba de carga",
-    "origen": "script Python"
-}
+def generar_datos():
+    return {
+        "id_nodo": "nodo1",
+        "temperatura": round(random.uniform(20.0, 30.0), 2),
+        "humedad": round(random.uniform(40.0, 60.0), 2),
+        "co2": round(random.uniform(400, 800), 2),
+        "volatiles": round(random.uniform(0.1, 1.0), 2)
+    }
 
-# Número de peticiones a enviar
-total_peticiones = 20
+print("Probando el LB de los Middleware")
 
-for i in range(total_peticiones):
+while True:
+    datos = generar_datos()
     try:
         response = requests.post(URL, json=datos)
-        print(f"[{i+1}] Código de respuesta: {response.status_code}")
-        if response.status_code != 200:
-            print(f"→ Respuesta del servidor: {response.text}")
+        print(f"Enviado: {datos} > Estado {response.status_code}")
+        print("Respuesta del middleware:", response.text)
     except Exception as e:
-        print(f"[{i+1}] Error al enviar: {e}")
-    
-    time.sleep(0)
+        print("Error al enviar datos:", e)
+    time.sleep(0) 
