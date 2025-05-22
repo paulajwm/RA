@@ -10,7 +10,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 // Lista de IPs bloqueadas
-const blacklist = ['192.168.1.100', '10.0.0.5', '127.0.0.9']; 
+const blacklist = ['192.168.1.100', '10.0.0.5', '127.0.0.9', '10.0.1.17']; 
 
 const app1 = express();
 
