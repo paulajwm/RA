@@ -9,7 +9,7 @@ const BACKEND = process.env.BACKEND || 'http://localhost:3000/record'; // Cambia
 app.use(express.json());
 
 const buckets = {};
-const capacity = 5;
+const capacity = 50;
 const leakRate = 1;
 const interval = 1000;
 
