@@ -18,7 +18,8 @@ print("Enviando datos al middleware a través de HAProxy...")
 while True:
     datos = generar_datos()
     try:
-        response = requests.get(URL, params=datos)
+        response = requests.post(URL, json=datos)
+        print(f"Enviado: {datos} > Estado {response.status_code}")
         print("Respuesta del middleware:", response.text)
     except Exception as e:
         print("Error al enviar datos:", e)
