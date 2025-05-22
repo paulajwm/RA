@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 const NOMBRE = process.env.NOMBRE || 'LB2';
 const BACKEND = process.env.BACKEND || 'http://localhost:3001/record'; // Cambiar según el caso
 
