@@ -4,7 +4,7 @@ const app = express();
 
 const PORT = process.env.PORT || 5001;
 const NOMBRE = process.env.NOMBRE || 'LB2';
-const BACKEND = process.env.BACKEND || 'http://localhost:3001/record'; // Cambiar según el caso
+const BACKEND = process.env.BACKEND || 'http://10.100.0.102:3001/record'; // Cambiar según el caso
 
 app.use(express.json());
 
