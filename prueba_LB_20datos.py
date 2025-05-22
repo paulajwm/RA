@@ -15,7 +15,9 @@ def generar_datos():
 
 print("Probando el LB de los Middleware")
 
-while True:
+total_peticiones = 20
+
+for i in range(total_peticiones):
     datos = generar_datos()
     try:
         response = requests.post(URL, json=datos)
