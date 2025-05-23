@@ -11,7 +11,7 @@ app.use(express.json());
 const buckets = {};
 const capacity = 5;
 const leakRate = 1;
-const interval = 1000;
+const interval = 90;
 
 setInterval(() => {
   for (let ip in buckets) {
